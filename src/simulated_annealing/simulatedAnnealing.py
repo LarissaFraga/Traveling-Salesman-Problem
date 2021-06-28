@@ -26,12 +26,11 @@ def main():
         #abre o arquivo 
         with open(arquivo) as f:
             linhas = f.readlines()
-            saida = linhas
-
+            
     #grava a lista em um novo arquivo
-    arquivo_saida = open('/arquivo_saida.txt', 'w')
-    arquivo_saida.writelines(saida)
-    arquivo_saida.close()
+    diretorio_saida = 'arquivo_saida/'
+    #os.mkdir(diretorio_saida)
+    arquivo1 = open('meuarquivo.txt', 'w')
 
 if __name__ == '__main__':
    main()
