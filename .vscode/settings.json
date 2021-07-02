@@ -1,0 +1,6 @@
+{
+    "java.project.sourcePaths": [
+        "src/hill_climbing/src",
+        "src/simulated_annealing"
+    ]
+}
