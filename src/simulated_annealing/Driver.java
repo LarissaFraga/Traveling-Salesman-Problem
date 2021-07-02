@@ -30,7 +30,7 @@ public class Driver {
         /*
         * Até o momento está lendo o arquivo e preenchendo a lista de cidades
         * */
-        Tour tour = new Tour(cities);
+        Caminho tour = new Caminho(cities);
         // Inicialização da primeira solução
         //SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing();
         SimulatedAnnealing.simmulatedAnnealing(tour);

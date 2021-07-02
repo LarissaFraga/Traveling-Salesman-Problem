@@ -1,73 +1,61 @@
 public class SimulatedAnnealing {
 
-    // Calculate the acceptance probability
-    public static double acceptanceProbability(int energy, int newEnergy, double temperature) {
-        // If the new solution is better, accept it
-        if (newEnergy < energy) {
+    public static double probabilidade(int energia, int novaEnergia, double temperatura) {
+        if (novaEnergia < energia) {
             return 1.0;
         }
-        // If the new solution is worse, calculate an acceptance probability
-        return Math.exp((energy - newEnergy) / temperature);
+        return Math.exp((energia - novaEnergia) / temperatura);
     }
 
-    public static Tour simmulatedAnnealing(Tour currentRoute){
-        // Create and add our cities
-        Cidade city = new Cidade(60, 200);
-        TourManager.adicionaCidade(city);
+    public static Caminho simmulatedAnnealing(Caminho caminhoAtual){
         
-
-        // Set initial temp
+        // temperatura inicial
         double temp = 10000;
 
-        // Cooling rate
+        // taxa de esfriamento
         double coolingRate = 0.003;
 
-        // Initialize intial solution
-        Tour currentSolution = new Tour();
-        
-        System.out.println("Initial solution distance: " + currentSolution.getDistance());
+        Caminho solucaoAtual = caminhoAtual;
 
-        // Set as current best
-        Tour best = new Tour(currentSolution.getTour());
+        Caminho melhorCaminho = new Caminho(solucaoAtual.getCaminho());
         
-        // Loop until system has cooled
         while (temp > 1) {
-            // Create new neighbour tour
-            Tour newSolution = new Tour(currentSolution.getTour());
+            // Cria o caminho do vizinho
+            Caminho solucaoNova = new Caminho(solucaoAtual.getCaminho());
 
-            // Get a random positions in the tour
-            int tourPos1 = (int) (newSolution.tourSize() * Math.random());
-            int tourPos2 = (int) (newSolution.tourSize() * Math.random());
+            // Seleciona posicoes aleatorias no caminho
+            int caminhoPos1 = (int) (solucaoNova.tamanhoCaminho() * Math.random());
+            int caminhoPos2 = (int) (solucaoNova.tamanhoCaminho() * Math.random());
 
-            // Get the cities at selected positions in the tour
-            Cidade citySwap1 = newSolution.getCidade(tourPos1);
-            Cidade citySwap2 = newSolution.getCidade(tourPos2);
+            // Coleta as posicoes das cidades selecionadas no caminho
+            Cidade trocaCidade1 = solucaoNova.getCidade(caminhoPos1);
+            Cidade trocaCidade2 = solucaoNova.getCidade(caminhoPos2);
 
-            // Swap them
-            newSolution.setCity(tourPos2, citySwap1);
-            newSolution.setCity(tourPos1, citySwap2);
+            // Troca as cidades
+            solucaoNova.setCidade(caminhoPos2, trocaCidade1);
+            solucaoNova.setCidade(caminhoPos1, trocaCidade2);
             
-            // Get energy of solutions
-            int currentEnergy = currentSolution.getDistance();
-            int neighbourEnergy = newSolution.getDistance();
+            // Calcula a energia
+            int energiaAtual = solucaoAtual.getDistancia();
+            int energiaVizinho = solucaoNova.getDistancia();
 
-            // Decide if we should accept the neighbour
-            if (acceptanceProbability(currentEnergy, neighbourEnergy, temp) > Math.random()) {
-                currentSolution = new Tour(newSolution.getTour());
+            // Decide se deve aceitar o vizinho
+            if (probabilidade(energiaAtual, energiaVizinho, temp) > Math.random()) {
+                solucaoAtual = new Caminho(solucaoNova.getCaminho());
             }
 
-            // Keep track of the best solution found
-            if (currentSolution.getDistance() < best.getDistance()) {
-                best = new Tour(currentSolution.getTour());
+            // Rastreia a melhor solucao
+            if (solucaoAtual.getDistancia() < melhorCaminho.getDistancia()) {
+                melhorCaminho = new Caminho(solucaoAtual.getCaminho());
             }
             
-            // Cool system
+            // Esfria a temperatura
             temp *= 1-coolingRate;
         }
 
-        System.out.println("Final solution distance: " + best.getDistance());
-        System.out.println("Tour: " + best);
+        System.out.println("Distancia da solucao final: " + melhorCaminho.getDistancia());
+        System.out.println("Caminho: " + melhorCaminho);
 
-        return currentRoute;
+        return caminhoAtual;
     }
 }

@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class TourManager {
+public class CaminhoManager {
 
     // Armazena cidades
     private static ArrayList<Cidade> cidadesDestinos = new ArrayList<Cidade>();
